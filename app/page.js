@@ -4,8 +4,12 @@ import RedButton from '@/components/RedButton';
 import WhiteButton from '@/components/WhiteButton';
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
+import { useRouter,usePathname } from 'next/navigation'
 
 const Home = () => {
+
+  const router = useRouter();
+
   return (
     <AppLayout>
       <Con>
@@ -19,8 +23,8 @@ const Home = () => {
           moments.
         </p>
         <p className='text'>Secure. Surprising. Simply Fun.</p>
-        <RedButton content="Get Started"/>
-        <WhiteButton content="Login"/>
+        <RedButton content="Get Started" onClick={() => router.push(`/auth/register`)}/>
+        <WhiteButton content="Login" onClick={() => router.push(`/auth/login`)}/>
       </Con>
     </AppLayout>
   )
@@ -28,6 +32,9 @@ const Home = () => {
 
 const Con = styled.div`  
   width: 100%;  
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
   .img-con{
     display: flex;
     justify-content: center;
