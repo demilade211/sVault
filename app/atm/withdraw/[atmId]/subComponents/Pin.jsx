@@ -5,11 +5,9 @@ import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import OtpInput from 'react-otp-input';
 
-const Pin = () => {
+const Pin = ({setOtp,otp}) => {
 
-    const [otp, setOtp] = useState({
-        otp: ""
-    })
+     
 
     const handleChange = (otp) => setOtp(prev => ({ ...prev, otp }));
     return (
