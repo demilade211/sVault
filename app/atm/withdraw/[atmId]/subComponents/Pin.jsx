@@ -38,6 +38,7 @@ const Pin = ({setOtp,otp}) => {
                     containerStyle={{ marginBottom: "30px" }}
                 />
             </div>
+            <p className='instruction'>Press <span>Enter</span> to continue</p>
         </Con>
     )
 }
@@ -76,6 +77,20 @@ const Con = styled.div`
     letter-spacing: 0em; 
     color: rgba(255, 255, 255, 1);
     margin-bottom: 30px;
+  }
+  .instruction{
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em; 
+    color: rgba(167, 167, 167, 1);
+    span{
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: 0em; 
+        color: rgba(255, 255, 255, 1);
+    }
   }
 `;
 

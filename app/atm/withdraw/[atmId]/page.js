@@ -4,73 +4,123 @@ import React, { useState } from 'react'
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import Pin from './subComponents/Pin';
+import AccountNumber from './subComponents/AccountNumber';
+import Bank from './subComponents/Bank';
+import VerifyAccount from './subComponents/VerifyAccount';
+import Amount from './subComponents/Amount';
+import Withdrawn from './subComponents/Withdrawn';
+import Insufficient from './subComponents/Insufficient';
 
 const Atm = () => {
 
     const [page, setPage] = useState(0)
     const [accountInfo, setAccountInfo] = useState({
-        pin:"",
-        accNo:"",
-        bankName:"",
-        amount:""
+        pin: "",
+        accNo: "",
+        bankCode: "",
+        amount: ""
     })
     const [otp, setOtp] = useState({
         otp: ""
     })
 
-    const handleAtmButtons = (type)=>{
-        if(page===0){
-            if(type==="delete"){
-                setOtp(prev=>({...prev,otp:""}))
-            }else{
-                if(otp.otp.length<4){
-                    setOtp(prev=>({...prev,otp:prev.otp+type}))
+    const handleAtmButtons = (type) => {
+        if (page === 0) {
+            if (type === "delete") {
+                setOtp(prev => ({ ...prev, otp: "" }))
+            } else if (type === "enter") {
+                if (otp.otp.length === 4) {
+                    setPage(1)
+                }
+            } else {
+                if (otp.otp.length < 4) {
+                    setOtp(prev => ({ ...prev, otp: prev.otp + type }))
                 }
             }
-            
+
+        }
+        if (page === 1) {
+            if (type === "delete") {
+                setAccountInfo(prev => ({ ...prev, accNo: "" }))
+            } else if (type === "enter") {
+                if (accountInfo.accNo.length > 5) {
+                    setPage(2)
+                }
+            } else {
+                setAccountInfo(prev => ({ ...prev, accNo: prev.accNo + type }))
+            }
+
+        }
+
+        if (page === 2) {
+            if (type === "enter") {
+                if (accountInfo.bankCode.length > 0) {
+                    setPage(3)
+                }
+            }
+
+        }
+
+        if (page === 4) {
+            if (type === "delete") {
+                setAccountInfo(prev => ({ ...prev, amount: "" }))
+            } else if (type === "enter") {
+                if (accountInfo.amount.length > 2) {
+                    setPage(5)
+                }
+            } else {
+                setAccountInfo(prev => ({ ...prev, amount: prev.amount + type }))
+            }
+
         }
 
     }
-    console.log(otp);
+    console.log(accountInfo);
 
     return (
         <AppLayout>
             <Con>
                 <Screen>
-                    {page === 0 && <Pin setOtp={setOtp} otp={otp} accountInfo={accountInfo} setAccountInfo={setAccountInfo}/>}
+                    {page === 0 && <Pin setOtp={setOtp} otp={otp} accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
+                    {page === 1 && <AccountNumber accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
+                    {page === 2 && <Bank accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
+                    {page === 3 && <VerifyAccount accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage} />}
+                    {page === 4 && <Amount accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
+                    {page === 5 && <Withdrawn accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage}/>}
+                    {page === 6 && <Insufficient accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage}/>}
                 </Screen>
                 <KeysCon>
-                    <button className='key' onClick={()=>handleAtmButtons(1)}>
+                    <button className='key' onClick={() => handleAtmButtons(1)}>
                         <p>1</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(2)}>
+                    <button className='key' onClick={() => handleAtmButtons(2)}>
                         <p>2</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(3)}>
+                    <button className='key' onClick={() => handleAtmButtons(3)}>
                         <p>3</p>
                     </button>
-                    <button className='key red' onClick={()=>handleAtmButtons("delete")}>
+                    <button className='key red' onClick={() => handleAtmButtons("delete")}>
                         <p>Delete</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(4)}>
+                    <button className='key' onClick={() => handleAtmButtons(4)}>
                         <p>4</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(5)}>
+                    <button className='key' onClick={() => handleAtmButtons(5)}>
                         <p>5</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(6)}>
+                    <button className='key' onClick={() => handleAtmButtons(6)}>
                         <p>6</p>
                     </button>
                     <button className='key yellow'>
                         <p>Cancel</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(7)}>
+                    <button className='key' onClick={() => handleAtmButtons(7)}>
                         <p>7</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(8)}>
+                    <button className='key' onClick={() => handleAtmButtons(8)}>
                         <p>8</p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(9)}>
+                    <button className='key' onClick={() => handleAtmButtons(9)}>
                         <p>9</p>
                     </button>
                     <button className='key'>
@@ -79,13 +129,13 @@ const Atm = () => {
                     <button className='key'>
                         <p></p>
                     </button>
-                    <button className='key' onClick={()=>handleAtmButtons(0)}>
+                    <button className='key' onClick={() => handleAtmButtons(0)}>
                         <p>0</p>
                     </button>
                     <button className='key'>
                         <p></p>
                     </button>
-                    <button className='key green'>
+                    <button className='key green' onClick={() => handleAtmButtons("enter")}>
                         <p>Enter</p>
                     </button>
                 </KeysCon>
