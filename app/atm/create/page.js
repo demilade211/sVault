@@ -24,7 +24,7 @@ const Create = () => {
 
 const Con = styled.div`  
   width: 100%;  
-  padding: 40px 5px;  
+  padding: 40px 5px; 
 `;
 
 export default Create

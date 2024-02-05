@@ -17,8 +17,7 @@ const Con = styled.div`
   justify-content: center;
   .inner{
     width: 500px;
-    min-height: 100vh;
-    padding: 0 30px; 
+    min-height: 100vh; 
     @media (max-width: 511px) { 
       width: 100%; 
     }
