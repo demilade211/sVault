@@ -6,34 +6,27 @@ import { useRouter, usePathname } from 'next/navigation'
 import RedInput from '@/components/RedInput';
 import RedButton from '@/components/RedButton';
 
-const Login = () => {
+const VerifyToken = () => {
 
-  const router = useRouter();
+    const router = useRouter();
 
-  return (
-    <AppLayout>
-      <Con>
-        <div className='back-con' onClick={() => router.push(`/`)}>
-          <img className='mr-3' src="/images/home/back.svg" alt="img" /> 
-        </div>
-        <HeadCon>
-          <h1>Login</h1>
-          <p>Login into your account</p>
-        </HeadCon>
-        <RedInput type="email" label="Email" />
-        <RedInput type="password" label="Password" />
-        <RedButton content="Login" onClick={() => router.push(`/home`)} />
-        <p className='forgot'>Forgot Password? <span onClick={() => router.push(`/auth/forgot`)}>Reset</span></p>
-        <div className='flex justify-center mt-6'>
-          <img src="/images/auth/or.png" alt="img" />
-        </div>
-        <GoogleDiv>
-          <img src="/images/auth/google.svg" alt="img" />
-          <p>Login with Google</p>
-        </GoogleDiv> 
-      </Con>
-    </AppLayout>
-  )
+    return (
+        <AppLayout>
+            <Con>
+                <div className='back-con' onClick={() => router.push(`/`)}>
+                    <img className='mr-3' src="/images/home/back.svg" alt="img" />
+                </div>
+                <HeadCon>
+                    <h1>Verify Email Token</h1>
+                    <p>
+                        Please enter token from email
+                    </p>
+                </HeadCon>
+                <RedInput type="text" label="Email Token" /> 
+                <RedButton content="Confirm" onClick={() => router.push(`/auth/reset/${1}`)} /> 
+            </Con>
+        </AppLayout>
+    )
 }
 
 const Con = styled.div`  
@@ -65,7 +58,6 @@ const Con = styled.div`
     text-align: left;
     color: rgba(90, 90, 90, 1);
     margin-top: 10px;
-    cursor: pointer;
     span{ 
       font-size: 16px;
       font-weight: 700;
@@ -80,6 +72,7 @@ const Con = styled.div`
 const HeadCon = styled.div`  
   width: 100%;  
   margin-bottom:20px;
+  padding: 0 20px;
   h1{
     font-family: Poppins;
     font-size: 18px;
@@ -101,34 +94,5 @@ const HeadCon = styled.div`
   }
 `;
 
-const GoogleDiv = styled.div`
-    width: 100%;
-    height: 50px;
-    border: 2px solid rgba(255, 0, 0, 1);
-    border-radius: 40px; 
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    margin-top:25px;
-    cursor:pointer;
-    margin-bottom:20px;
-    transition: 300ms ease-in-out;
 
-    &:hover{
-      transform: scale(1.05);
-    }
-
-    img{
-        margin-right:10px;
-    }
-    p{
-        font-weight: 700;
-        font-size: 12px;
-        color:rgba(32, 32, 32, 1);  
-    }
-    
-`;
-
-
-
-export default Login
+export default VerifyToken

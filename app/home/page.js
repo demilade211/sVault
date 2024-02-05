@@ -21,7 +21,7 @@ const Main = () => {
                     </div>
                     <h2>Create a Virtual Atm</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac pulvinar velit, malesuada volutpat </p>
-                    <Btn>Create</Btn>
+                    <Btn onClick={() => router.push(`/atm/create`)}>Create</Btn>
                 </CreateCon>
                 <AtmsCon>
                     <h2>My Virtual ATM Machines</h2>
@@ -31,7 +31,7 @@ const Main = () => {
                             <h3>Dayor</h3>
                             <p className='sub2'>suprisevault.com/atm0081TV</p>
                         </div>
-                        <SmallBtn>Monitor</SmallBtn>
+                        <SmallBtn onClick={() => router.push(`/atm/${1}`)}>Monitor</SmallBtn>
                     </Atms>
                     <Atms> 
                         <div>

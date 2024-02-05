@@ -8,30 +8,33 @@ import RedButton from '@/components/RedButton';
 
 const Register = () => {
 
-    const router = useRouter();
+  const router = useRouter();
 
-    return (
-        <AppLayout>
-            <Con>
-                <HeadCon>
-                    <h1>Step 1/2</h1>
-                    <p>Create Account</p>
-                </HeadCon>
-                <RedInput type="text" label="Full name" />
-                <RedInput type="email" label="Email" />
-                <RedInput type="password" label="Password" />
-                <RedInput type="password" label="Confirm Password" />
-                <div className='flex justify-center mt-6'>
-                    <img src="/images/auth/or.png" alt="img" />
-                </div>
-                <GoogleDiv>
-                    <img src="/images/auth/google.svg" alt="img" />
-                    <p>Signup with Google</p>
-                </GoogleDiv>
-                <RedButton content="Proceed" onClick={() => router.push(`/auth/success`)} />
-            </Con>
-        </AppLayout>
-    )
+  return (
+    <AppLayout>
+      <Con>
+        <div className='back-con' onClick={() => router.push(`/`)}>
+          <img className='mr-3' src="/images/home/back.svg" alt="img" />
+        </div>
+        <HeadCon>
+          <h1>Step 1/2</h1>
+          <p>Create Account</p>
+        </HeadCon>
+        <RedInput type="text" label="Full name" />
+        <RedInput type="email" label="Email" />
+        <RedInput type="password" label="Password" />
+        <RedInput type="password" label="Confirm Password" />
+        <div className='flex justify-center mt-6'>
+          <img src="/images/auth/or.png" alt="img" />
+        </div>
+        <GoogleDiv>
+          <img src="/images/auth/google.svg" alt="img" />
+          <p>Signup with Google</p>
+        </GoogleDiv>
+        <RedButton content="Proceed" onClick={() => router.push(`/auth/verify-account`)} />
+      </Con>
+    </AppLayout>
+  )
 }
 
 const Con = styled.div`  
@@ -40,6 +43,21 @@ const Con = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center; 
+  .back-con{
+    width: 100%;
+    display: flex; 
+    margin-bottom:30px;
+    cursor: pointer;
+    h1{
+        font-family: Poppins;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+        letter-spacing: 0em;
+        text-align: left; 
+        color: rgba(26, 21, 21, 1); 
+    }
+  }  
 `;
 
 const HeadCon = styled.div`  
