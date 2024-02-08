@@ -8,7 +8,7 @@ import AtmSelect from '@/components/AtmSelect';
 const Withdrawn = ({setPage}) => {
   return (
     <Con>
-      <div className='mb-6'><img  src="/images/components/ins.svg" alt="img" /></div>
+      <div className='mb-6'><img  src="/images/components/with.svg" alt="img" /></div>
       <h1>Account Credited Succesfully</h1>
       <p className='sub'>
         Your Account has been credited succesfully

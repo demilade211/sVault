@@ -1,64 +1,107 @@
 'use client'
 
+import React, { useState, useEffect } from "react";
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
+import { getOneAtm, getAtmWithdrawals } from '@/services/atm';
+import { shortenString } from "@/utils/helpers";
+import ContentLoader from "@/components/loaders/ContentLoader";
 
 const OneAtm = () => {
 
-    const router = useRouter();
+  const router = useRouter();
+  const params = useParams()
+  const { atmId } = params
+  const [loading, setLoading] = React.useState(false)
+  const [atm, setAtm] = React.useState({})
+  const [history, setHistory] = React.useState([])
+  const [snackInfo, setSnackInfo] = React.useState({ openSnack: false, type: "", message: "" })
 
-    return (
-        <AppLayout>
-            <Con>
-                <HeadCon>
-                    <div className='back-con' onClick={() => router.push(`/home`)}>
-                        <img className='mr-3' src="/images/home/back.svg" alt="img" />
-                        <h1>Atm Transaction Details</h1>
-                    </div>
-                    <p>Here is the info of this  of this wallet</p>
-                </HeadCon>
-                <SummaryCon>
-                    <div className='row flex justify-between items-center mb-8'>
-                        <div>
-                            <p className='top'>Link:</p>
-                            <p className='bottom'>suprisevault.com/atm0081TV</p>
-                        </div>
-                        <div>
-                            <p className='top'>Code:</p>
-                            <p className='bottom'>1234</p>
-                        </div>
-                    </div>
-                    <div className='row flex justify-between items-center'>
-                        <div>
-                            <p className='top'>Amount Recharged</p>
-                            <p className='amount'>N50,000.00</p>
-                        </div>
-                        <div>
-                            <p className='top'>Current Balance</p>
-                            <p className='amount'>N35,000.00</p>
-                        </div>
-                    </div>
-                </SummaryCon>
-                <h2>Withdrawal History</h2>
-                {[{ status: "failed" }, { status: "success" }].map((val,index) => (
-                    <WithdrawalAttempt key={index}>
-                        <div className='left'>
-                            <img className='mr-3' src={`/images/home/${val.status==="failed"?"fail":"suc"}.svg`} alt="img" />
-                            <div>
-                                <p className='top'>Atm Withdrawal</p>
-                                <p className='bottom'>01-02-2024</p>
-                            </div>
-                        </div>
-                        <div className='right'>
-                            <p className='top'>-10,000</p>
-                            <p className='bottom'>02:00PM</p>
-                        </div>
-                    </WithdrawalAttempt>
-                ))}
-            </Con>
-        </AppLayout>
-    )
+  useEffect(() => {
+    try {
+      const fetchMyAtms = async () => {
+        setLoading(true)
+        const response = await getOneAtm(atmId)
+        const response2 = await getAtmWithdrawals(atmId)
+        setLoading(false)
+        setAtm(response.atm)
+        setHistory(response2.history)
+      };
+      fetchMyAtms();
+
+    } catch (error) {
+      setLoading(false)
+      alert(error)
+    }
+  }, []);
+
+  console.log(atm);
+
+  return (
+    <AppLayout>
+      <Con>
+        <HeadCon>
+          <div className='back-con' onClick={() => router.push(`/home`)}>
+            <img className='mr-3' src="/images/home/back.svg" alt="img" />
+            <h1>Atm Transaction Details</h1>
+          </div>
+          <p>Here is the info of this  of this wallet</p>
+        </HeadCon>
+        <SummaryCon>
+          <div className='row flex justify-between items-center mb-8'>
+            <div>
+              <p className='top'>Link:</p>
+              <p className='bottom'>{shortenString(`suprisevault.com/atm/withdraw/${atmId}`, 25)}</p>
+            </div>
+            <div>
+              <p className='top'>Code:</p>
+              <p className='bottom'>{atm.pin}</p>
+            </div>
+          </div>
+          <div className='row flex justify-between items-center'>
+            <div>
+              <p className='top'>Amount Recharged</p>
+              <p className='amount'>N{atm.amount}</p>
+            </div>
+            <div>
+              <p className='top'>Current Balance</p>
+              <p className='amount'>N{atm.balance}</p>
+            </div>
+          </div>
+        </SummaryCon>
+        <h2>Withdrawal History</h2>
+        {history.length === 0 ?
+          loading ? <ContentLoader />
+            :
+            <WithdrawalAttempt>
+              <div className='left flex items-center'>
+                <img className='mr-3' src="/images/home/noW.svg" alt="img" />
+                <div>
+                  <p className='top'>No Activities Yet on this machine</p>
+                </div>
+              </div>
+            </WithdrawalAttempt>
+          :
+          history.map((val, index) => (
+            <WithdrawalAttempt key={index}>
+              <div className='left'>
+                <img className='mr-3' src={`/images/home/${val.status === "wrong" ? "fail" : "suc"}.svg`} alt="img" />
+                <div>
+                  <p className='top'>Atm Withdrawal</p>
+                  <p className='bottom'>01-02-2024</p>
+                </div>
+              </div>
+              <div className='right'>
+                <p className='top'>-10,000</p>
+                <p className='bottom'>02:00PM</p>
+              </div>
+            </WithdrawalAttempt>
+          ))
+        }
+      </Con>
+    </AppLayout>
+  )
 }
 
 const Con = styled.div`  

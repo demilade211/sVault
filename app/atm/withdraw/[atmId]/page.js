@@ -10,6 +10,7 @@ import VerifyAccount from './subComponents/VerifyAccount';
 import Amount from './subComponents/Amount';
 import Withdrawn from './subComponents/Withdrawn';
 import Insufficient from './subComponents/Insufficient';
+import AtmLayout from '@/layouts/AtmLayout';
 
 const Atm = () => {
 
@@ -74,11 +75,10 @@ const Atm = () => {
 
         }
 
-    }
-    console.log(accountInfo);
+    } 
 
     return (
-        <AppLayout>
+        <AtmLayout>
             <Con>
                 <Screen>
                     {page === 0 && <Pin setOtp={setOtp} otp={otp} accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
@@ -140,7 +140,7 @@ const Atm = () => {
                     </button>
                 </KeysCon>
             </Con>
-        </AppLayout>
+        </AtmLayout>
     )
 }
 
@@ -148,7 +148,11 @@ const Con = styled.div`
   width: 100%;  
   height: 100%;
   padding: 40px 15px;  
-  background: rgba(13, 11, 11, 1); 
+  background: rgba(13, 11, 11, 1);  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Screen = styled.div`  

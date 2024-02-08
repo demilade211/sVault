@@ -1,19 +1,53 @@
 'use client'
 
+import React, { useState, useEffect } from "react";
 import AppLayout from '@/layouts/AppLayout';
+import { getMyAtms } from '@/services/atm';
 import styled from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation'
+import NoAtmCard from "./subcomponents/NoAtmCard";
+import ContentLoader from "@/components/loaders/ContentLoader";
+import { useDispatch, useSelector } from 'react-redux'
+import { shortenString } from '@/utils/helpers'
 
 const Main = () => {
 
+    const { user, status } = useSelector((state) => state.userReducer);
+
     const router = useRouter();
+    const [loading, setLoading] = React.useState(false)
+    const [atms, setAtms] = React.useState([])
+    const [snackInfo, setSnackInfo] = React.useState({ openSnack: false, type: "", message: "" })
+
+    useEffect(() => {
+        try {
+            const fetchMyAtms = async () => {
+                setLoading(true)
+                const response = await getMyAtms()
+                setLoading(false)
+                setAtms(response.atms)
+            };
+            fetchMyAtms();
+
+        } catch (error) {
+            setLoading(false)
+            alert(error)
+        }
+    }, []);
+
+    let filteredAtms = atms.filter(val => val.isFunded)
 
     return (
         <AppLayout>
             <Con>
-                <HeadCon>
-                    <h1>Welcome Afo</h1>
-                    <p>Log Into Account</p>
+                <HeadCon className="flex justify-between items-center">
+                    <div >
+                        <h1>Welcome {user.name.split(" ")[0]}</h1>
+                        <p>A Good day to gift a friend cash</p>
+                    </div>
+                    <div>
+                        <img className='' src="/images/home/profile.svg" alt="img" />
+                    </div>
                 </HeadCon>
                 <CreateCon>
                     <div className='img-con flex justify-center'>
@@ -26,20 +60,23 @@ const Main = () => {
                 <AtmsCon>
                     <h2>My Virtual ATM Machines</h2>
                     <p className='sub1'>Recent Transactions </p>
-                    <Atms> 
-                        <div>
-                            <h3>Dayor</h3>
-                            <p className='sub2'>suprisevault.com/atm0081TV</p>
-                        </div>
-                        <SmallBtn onClick={() => router.push(`/atm/${1}`)}>Monitor</SmallBtn>
-                    </Atms>
-                    <Atms> 
-                        <div>
-                            <h3>Funke</h3>
-                            <p className='sub2'>suprisevault.com/atm0081TV</p>
-                        </div>
-                        <SmallBtn>Monitor</SmallBtn>
-                    </Atms>
+                    {loading ?
+                        <ContentLoader />
+                        :
+                        (filteredAtms.length === 0 ?
+                            <NoAtmCard />
+                            :
+                            filteredAtms.map((val, index) => (
+                                <Atms>
+                                    <div>
+                                        <h3>{val.beneficiaryName}</h3>
+                                        <p className='sub2'>{`${shortenString(`suprisevault.com/atm/withdraw/${val._id}`, 30)}`}</p>
+                                    </div>
+                                    <SmallBtn onClick={() => router.push(`/atm/${val._id}`)}>Monitor</SmallBtn>
+                                </Atms>
+                            ))
+                        )
+                    }
                 </AtmsCon>
             </Con>
         </AppLayout>

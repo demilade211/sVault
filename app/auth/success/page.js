@@ -15,7 +15,7 @@ const SignupSuccess = () => {
                 <div className='img-con'>
                     <img className='' src="/images/auth/success.png" alt="img" />
                 </div>
-                <h1>Card Added Sucessfully</h1>
+                <h1>Registeration Sucessfully</h1>
                 <p className='sub'>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non arcu purus.
                 </p>

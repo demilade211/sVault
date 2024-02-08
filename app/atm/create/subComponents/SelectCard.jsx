@@ -5,9 +5,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import { useRouter,usePathname } from 'next/navigation'
 
-const SelectCard = ({ setPage }) => {
+const SelectCard = ({ setPage,setAtmInfo,atmInfo,handleChange }) => {
 
     const router = useRouter();
+    
 
     return (
         <Con>
@@ -21,7 +22,7 @@ const SelectCard = ({ setPage }) => {
                 your Beneficiary to withdraw.
             </p>
             <AmountCon> 
-                <p>N</p><Input type="number" placeholder="0.0000"  name="" />
+                <p>N</p><Input type="number" placeholder="0.0000"  name="amount" value={atmInfo.amount} onChange={handleChange}/>
             </AmountCon>
 
             <RedButton content="Next" onClick={() => setPage(1)} />

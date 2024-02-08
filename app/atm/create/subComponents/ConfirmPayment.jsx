@@ -1,17 +1,74 @@
 'use client'
 
 import RedButton from '@/components/RedButton';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
-import { useRouter,usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux'
+import Backdrop from '@mui/material/Backdrop';
+import { makeRecurringPayment, initialize } from '@/services/payment'
+import CircularProgress from '@mui/material/CircularProgress';
+import { calculateTransactionFee } from '@/utils/helpers'
 
-const ConfirmPayment = ({ setPage }) => {
+const ConfirmPayment = ({ setPage, atmInfo }) => {
+
+  const { transactionFee, withdrawalAmount } = calculateTransactionFee(atmInfo.amount);
+  const { user, status } = useSelector((state) => state.userReducer);
 
   const router = useRouter();
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState({
+    email: "",
+    authorization: {
+
+    }
+  })
+  const [buttonDisabled, setButtonDisabled] = useState(true)
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const isComplete = active.email !== "" && active.authorization.authorization_code !== ""//check if all is not empty
+    isComplete ? setButtonDisabled(false) : setButtonDisabled(true)
+  }, [active])
+
+  const handlePayment = async () => {
+    setLoading(true)
+    let response = await initialize({...atmInfo,amount:withdrawalAmount + 1000})
+    if (response.success) {
+      setLoading(false)
+      router.push(response.authorization_url)
+    } else if (!response.success) {
+      setLoading(false)
+      alert("an error occured")
+    }
+  }
+
+  const handleCardCharge = async () => {
+    setLoading(true)
+    let response = await makeRecurringPayment(withdrawalAmount + 1000, active.email, active.authorization.authorization_code, atmInfo)
+    if (response.success) {
+      if (response.data.paused) {
+        router.push(response.data.authorization_url)
+      } else {
+        setLoading(false)
+        handleModClose()
+        setShowFeedback((prev) => ({ ...prev, show: true, message: "Card Charged Successfully" }))
+        router.refresh()
+
+      }
+    } else if (!response.success) {
+      setLoading(false)
+      alert(response.message)
+    }
+  }
 
   return (
     <Con>
+      <Backdrop
+        sx={{ color: "rgba(255, 0, 0, 1)", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <div className='back-con' onClick={() => setPage(1)}>
         <img className='mr-3' src="/images/home/back.svg" alt="img" />
         <h1>Verify Charges</h1>
@@ -19,7 +76,7 @@ const ConfirmPayment = ({ setPage }) => {
       <CostSummaryCon>
         <div className='row flex justify-between'>
           <p className='name'>Amount Recharged</p>
-          <p className='price'>N50,000.00</p>
+          <p className='price'>N{atmInfo.amount}</p>
         </div>
         <div className='row flex justify-between'>
           <p className='name'>Service Charge</p>
@@ -27,37 +84,47 @@ const ConfirmPayment = ({ setPage }) => {
         </div>
         <div className='row flex justify-between'>
           <p className='name'>Card Charge</p>
-          <p className='price'>N50.00</p>
+          <p className='price'>N{transactionFee}</p>
         </div>
         <div className='row flex justify-between'>
           <p className='name'>Total</p>
-          <p className='price'>51,050.00</p>
+          <p className='price'>N{withdrawalAmount + 1000}</p>
         </div>
       </CostSummaryCon>
-      <SavedCardCon>
-        <h1>Saved Card</h1>
-        {[0, 0].map((val, index) => (
-          <Card key={index} className={`${active === index && "active"}`} onClick={() => setActive(index)}>
-            <div className='left'>
-              <img className='mr-3' src="/images/home/card.svg" alt="img" />
-              <div>
-                <p className='mb-2'>**** **** **** 0642</p>
-                <p>Exp: 06/24</p>
+      {user.authorizations.lenghth !== 0 &&
+        <SavedCardCon>
+          <h1>Saved Card</h1>
+          {user.authorizations.map((item, index) => (
+            <Card
+              key={index}
+              className={`${active.authorization.authorization_code === item.authorization.authorization_code && "active"}`}
+              onClick={() => {
+                setActive((prev) => ({ ...prev, email: item.email, authorization: item.authorization }));
+              }}
+            >
+              <div className='left'>
+                <img className='mr-3' src="/images/home/card.svg" alt="img" />
+                <div>
+                  <p className='mb-2'>{item.authorization.brand.charAt(0).toUpperCase() + item.authorization.brand.slice(1)} XXXX-{item.authorization.last4}
+                  </p>
+                  <p>Exp: {item.authorization.exp_month}/{item.authorization.exp_year}</p>
+                </div>
               </div>
-            </div>
-            <div className='right'>
-              <img className='mr-4' src="/images/home/mastercard.svg" alt="img" />
-              {active === index ? <img className='' src="/images/home/red.svg" alt="img" />
-                :
-                <img className='' src="/images/home/nred.svg" alt="img" />
-              }
-            </div>
-          </Card>
-        ))}
-      </SavedCardCon>
+              <div className='right'>
+                <img className='mr-4' src="/images/home/mastercard.svg" alt="img" />
+                {active.authorization.authorization_code === item.authorization.authorization_code ?
+                  <img className='' src="/images/home/red.svg" alt="img" />
+                  :
+                  <img className='' src="/images/home/nred.svg" alt="img" />
+                }
+              </div>
+            </Card>
+          ))}
+        </SavedCardCon>
+      }
       <NewCardCon>
         <h1>Add a New card or Payment Option</h1>
-        <Card>
+        <Card onClick={handlePayment}>
           <div className='left'>
             <img className='mr-5' src="/images/home/card.svg" alt="img" />
             <h3>Add a new Card</h3>
@@ -68,7 +135,7 @@ const ConfirmPayment = ({ setPage }) => {
         <h3>Note</h3>
         <p>The virtual atm you are about to create will be available for withdrawal after <span className='bold'>24hrs</span>   </p>
       </NoteCon>
-      <RedButton content="Pay Now" onClick={() => router.push(`/atm/create/success`)}/>
+      <RedButton content="Pay Now" disabled={buttonDisabled} onClick={handleCardCharge} />
     </Con>
   )
 }

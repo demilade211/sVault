@@ -26,10 +26,11 @@ const Btn = styled.button`
     &:hover{
       transform: scale(1.05);
     }
+    
 
     &:disabled,
     button[disabled]{ 
-      background: #ECC583;
+      background:  #ff6666;
       color:white;
     }
 

@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components';
 
-const RedInput = ({ label, placeholder, type, onChange, name, value }) => {
+const RedInput = ({ placeholder, label, type, onChange, name, value, errors}) => {
     return (
         <InputLabelCon>
             <Label>{label}</Label>
             <GreyInput type={type} placeholder={placeholder} onChange={onChange} name={name} value={value && value} />
+            {errors?.inputName === name && errors?.isError && <ErrorMessage>{errors.message}</ErrorMessage>}
         </InputLabelCon>
     )
 }
@@ -13,6 +14,15 @@ const RedInput = ({ label, placeholder, type, onChange, name, value }) => {
 const InputLabelCon = styled.div`
     width: 100%;
     margin-bottom:20px;
+`;
+
+const ErrorMessage = styled.div` 
+    color: red; 
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top:5px;
 `;
 
 const GreyInput = styled.input`
@@ -24,7 +34,10 @@ const GreyInput = styled.input`
     font-weight: 400;
     font-size: 14px;
     padding:15px;
-    outline:none
+    outline:none;
+    &:focus {
+      border: 1px solid rgba(255, 0, 0, 1);
+    }
 `;
 
 const Label = styled.p`

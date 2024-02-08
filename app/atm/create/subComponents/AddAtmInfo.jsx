@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import OtpInput from 'react-otp-input';
 import RedButton from '@/components/RedButton';
 
-const AddAtmInfo = ({ setPage }) => {
+const AddAtmInfo = ({ setPage,setAtmInfo,atmInfo,handleChange }) => {
   const [otp, setOtp] = useState({
     otp: ""
   })
 
-  const handleChange = (otp) => setOtp(prev => ({ ...prev, otp }));
+  const handlePinChange = (otp) => setAtmInfo(prev => ({ ...prev, pin:otp }));
 
   return (
     <Con>
@@ -19,7 +19,7 @@ const AddAtmInfo = ({ setPage }) => {
         <img className='mr-3' src="/images/home/back.svg" alt="img" />
         <h1>Beneficiary Details</h1>
       </div>
-      <RedInput type="text" label="Beneficiary Name" />
+      <RedInput type="text" label="Beneficiary Name" onChange={handleChange} name="beneficiaryName" value={atmInfo.beneficiaryName}/>
       <h2>Add a Pin</h2>
       <p className='sub'>
         Input a Pin the beneficiary will use to access the
@@ -27,8 +27,8 @@ const AddAtmInfo = ({ setPage }) => {
       </p>
       <div className='flex justify-center'>
         <OtpInput
-          value={otp.otp}
-          onChange={handleChange}
+          value={atmInfo.pin}
+          onChange={handlePinChange}
           numInputs={4}
           placeholder='0000'
           inputStyle={{
@@ -54,7 +54,7 @@ const AddAtmInfo = ({ setPage }) => {
         Write a message you want delivered to your Bene-
         ficiary
       </p>
-      <RedTextArea type="textarea" ></RedTextArea>
+      <RedTextArea type="textarea" name='customMessage' value={atmInfo.customMessage} onChange={handleChange}></RedTextArea>
       <NoteCon>
         <h3>Note</h3>
         <p>A Charge fee of <span className='cancel'>NGN2,050.00</span> <span className='bold'>NGN1,050.00</span>  Will
