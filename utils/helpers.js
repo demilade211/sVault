@@ -59,3 +59,25 @@ export function shortenString(str, maxLength) {
     return str.slice(0, maxLength) + "...";
   }
 }
+
+export function hoursLeft(createdAt) {
+  // Get the created at date
+  const createdAtDate = new Date(createdAt);
+
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the time difference in milliseconds
+  const timeDifference = currentDate - createdAtDate;
+
+  // Convert milliseconds to hours
+  const hoursDifference = timeDifference / (1000 * 60 * 60);
+
+  // Calculate the remaining hours
+  const hoursLefts = 24 - hoursDifference;
+
+  // Check if the difference is less than 24 hours
+  const isWithin24Hours = hoursDifference < 24;
+
+  return { isWithin24Hours, hoursLefts };
+}

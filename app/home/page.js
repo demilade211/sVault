@@ -42,10 +42,10 @@ const Main = () => {
             <Con>
                 <HeadCon className="flex justify-between items-center">
                     <div >
-                        <h1>Welcome {user.name.split(" ")[0]}</h1>
+                        <h1>Welcome {user?.name.split(" ")[0]}</h1>
                         <p>A Good day to gift a friend cash</p>
                     </div>
-                    <div>
+                    <div onClick={() => router.push(`/profile`)}>
                         <img className='' src="/images/home/profile.svg" alt="img" />
                     </div>
                 </HeadCon>
@@ -54,7 +54,10 @@ const Main = () => {
                         <img className='' src="/images/home/smallatm.png" alt="img" />
                     </div>
                     <h2>Create a Virtual Atm</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac pulvinar velit, malesuada volutpat </p>
+                    <p>
+                        Generate a virtual atm link and code to
+                        send to your loved ones
+                    </p>
                     <Btn onClick={() => router.push(`/atm/create`)}>Create</Btn>
                 </CreateCon>
                 <AtmsCon>

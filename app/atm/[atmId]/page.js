@@ -5,10 +5,16 @@ import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import { useRouter, useParams } from 'next/navigation'
 import { getOneAtm, getAtmWithdrawals } from '@/services/atm';
-import { shortenString } from "@/utils/helpers";
+import { shortenString, hoursLeft } from "@/utils/helpers";
 import ContentLoader from "@/components/loaders/ContentLoader";
+import moment from "moment"
+import { useDispatch, useSelector } from 'react-redux'
+import MySnackBar from "@/components/MySnackBar";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const OneAtm = () => {
+
+  const { user, status } = useSelector((state) => state.userReducer);
 
   const router = useRouter();
   const params = useParams()
@@ -17,6 +23,8 @@ const OneAtm = () => {
   const [atm, setAtm] = React.useState({})
   const [history, setHistory] = React.useState([])
   const [snackInfo, setSnackInfo] = React.useState({ openSnack: false, type: "", message: "" })
+
+  const { isWithin24Hours, hoursLefts } = hoursLeft(atm.createdAt)
 
   useEffect(() => {
     try {
@@ -41,6 +49,7 @@ const OneAtm = () => {
   return (
     <AppLayout>
       <Con>
+        <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
         <HeadCon>
           <div className='back-con' onClick={() => router.push(`/home`)}>
             <img className='mr-3' src="/images/home/back.svg" alt="img" />
@@ -48,32 +57,41 @@ const OneAtm = () => {
           </div>
           <p>Here is the info of this  of this wallet</p>
         </HeadCon>
-        <div className="activate-time">
+        {isWithin24Hours && <div className="activate-time">
           <img className='mr-3' src="/images/home/clock.svg" alt="img" />
-          <p>This Machine is not yet active for withdrawal. Remaining time: <span>09 : 45 : 32</span> </p>
-        </div>
-        <SummaryCon>
-          <div className='row flex justify-between items-center mb-8'>
-            <div>
-              <p className='top'>Link:</p>
-              <p className='bottom'>{shortenString(`suprisevault.com/atm/withdraw/${atmId}`, 25)}</p>
+          <p>This Machine is not yet active for withdrawal.  <span>{Math.round(hoursLefts)}H</span> remaining </p>
+        </div>}
+        <SummaryCon2>
+          <div className="letter-con">
+            <p>{atm?.beneficiaryName?.split("")[0]}</p>
+          </div>
+          <p className="cb-para">Current Balance</p>
+          <h2>N{atm.balance}</h2>
+          <div className="summ">
+            <div className="row">
+              <p className="left">Amount Recharged:</p>
+              <p className="right bold">N{atm.amount}</p>
             </div>
-            <div>
-              <p className='top'>Code:</p>
-              <p className='bottom'>{atm.pin}</p>
+            <div className="row">
+              <p className="left">Link:</p>
+              <CopyToClipboard
+                text={`suprisevault.com/atm/withdraw/${atmId}`}
+                onCopy={() => setSnackInfo(prev => ({ ...prev, openSnack: true, type: "success", message: "Link copied to clip board" }))}
+              >
+                <p className="right">{shortenString(`suprisevault.com/atm/withdraw/${atmId}`, 20)}<img className='ml-2' src="/images/home/copy1.svg" alt="img" /></p>
+              </CopyToClipboard>
+            </div>
+            <div className="row">
+              <p className="left">Code:</p>
+              <CopyToClipboard
+                text={atm.pin}
+                onCopy={() => setSnackInfo(prev => ({ ...prev, openSnack: true, type: "success", message: "Link copied to clip board" }))}
+              >
+                <p className="right">{atm.pin}<img className='ml-2' src="/images/home/copy1.svg" alt="img" /></p>
+              </CopyToClipboard>
             </div>
           </div>
-          <div className='row flex justify-between items-center'>
-            <div>
-              <p className='top'>Amount Recharged</p>
-              <p className='amount'>N{atm.amount}</p>
-            </div>
-            <div>
-              <p className='top'>Current Balance</p>
-              <p className='amount'>N{atm.balance}</p>
-            </div>
-          </div>
-        </SummaryCon>
+        </SummaryCon2>
         <h2>Withdrawal History</h2>
         {history.length === 0 ?
           loading ? <ContentLoader />
@@ -93,12 +111,12 @@ const OneAtm = () => {
                 <img className='mr-3' src={`/images/home/${val.status === "wrong" ? "fail" : "suc"}.svg`} alt="img" />
                 <div>
                   <p className='top'>Atm Withdrawal</p>
-                  <p className='bottom'>01-02-2024</p>
+                  <p className='bottom'>{moment(atm.createdAt).subtract(10, 'days').calendar()}</p>
                 </div>
               </div>
               <div className='right'>
-                <p className='top'>-10,000</p>
-                <p className='bottom'>02:00PM</p>
+                <p className='top'>-{val.amount}</p>
+                <p className='bottom'>{moment(atm.createdAt).format('LT')}</p>
               </div>
             </WithdrawalAttempt>
           ))
@@ -124,6 +142,7 @@ const Con = styled.div`
   .activate-time{
     display: flex;
     align-items: center;
+    margin-bottom: 40px;
     p{ 
       font-family: Poppins;
       font-size: 12px;
@@ -205,6 +224,82 @@ const SummaryCon = styled.div`
       letter-spacing: 0em;
       text-align: left;
       color: rgba(0, 0, 0, 1);
+    }
+  }
+`;
+
+const SummaryCon2 = styled.div`  
+  width: 100%;   
+  background: rgba(255, 243, 243, 1);
+  border-radius: 30px;
+  padding: 40px 30px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .letter-con{
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 0, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    margin-top:-60px;
+    margin-bottom: 10px;
+    p{
+      font-family: Poppins;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 22px;
+      letter-spacing: 0em; 
+      color: rgba(255, 255, 255, 1); 
+    }
+  }
+  .cb-para{
+    font-family: Poppins;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    letter-spacing: 0em; 
+    color: rgba(118, 118, 118, 1);
+  }
+  h2{
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left; 
+  }
+  .summ{
+    width: 100%;
+    .row{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      .left{
+        font-family: Poppins;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 12px;
+        letter-spacing: 0em; 
+        color: rgba(118, 118, 118, 1);
+      }
+      .right{
+        font-family: Poppins;
+        font-size: 10px;
+        font-weight: 400;
+        line-height: 12px;
+        letter-spacing: 0em; 
+        color: rgba(118, 118, 118, 1);
+        display: flex;
+        align-items: center;
+      }
+      .bold{
+        font-weight:700;
+      }
     }
   }
 `;
