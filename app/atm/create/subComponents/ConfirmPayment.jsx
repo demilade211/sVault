@@ -38,7 +38,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
       router.push(response.authorization_url)
     } else if (!response.success) {
       setLoading(false)
-      alert("an error occured")
+      alert(response.message)
     }
   }
 
