@@ -48,6 +48,10 @@ const OneAtm = () => {
           </div>
           <p>Here is the info of this  of this wallet</p>
         </HeadCon>
+        <div className="activate-time">
+          <img className='mr-3' src="/images/home/clock.svg" alt="img" />
+          <p>This Machine is not yet active for withdrawal. Remaining time: <span>09 : 45 : 32</span> </p>
+        </div>
         <SummaryCon>
           <div className='row flex justify-between items-center mb-8'>
             <div>
@@ -117,11 +121,31 @@ const Con = styled.div`
     color: rgba(73, 73, 73, 1);
     margin-bottom:20px;
   }
+  .activate-time{
+    display: flex;
+    align-items: center;
+    p{ 
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+      letter-spacing: 0em;
+      text-align: left;
+      span{
+        font-family: Poppins;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 18px;
+        letter-spacing: 0em;
+        text-align: left;
+      }
+    }
+  }
 `;
 
 const HeadCon = styled.div`  
   width: 100%;   
-  margin-bottom:30px;
+  margin-bottom:20px;
   .back-con{
     display: flex;
     align-items: center;
