@@ -30,6 +30,7 @@ const AddAtmInfo = ({ setPage,setAtmInfo,atmInfo,handleChange }) => {
           value={atmInfo.pin}
           onChange={handlePinChange}
           numInputs={4}
+          inputType='number'
           placeholder='0000'
           inputStyle={{
             width: "100%",
