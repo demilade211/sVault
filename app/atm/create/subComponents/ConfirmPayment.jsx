@@ -9,6 +9,7 @@ import Backdrop from '@mui/material/Backdrop';
 import { makeRecurringPayment, initialize } from '@/services/payment'
 import CircularProgress from '@mui/material/CircularProgress';
 import { calculateTransactionFee } from '@/utils/helpers'
+import MySnackBar from '@/components/MySnackBar';
 
 const ConfirmPayment = ({ setPage, atmInfo }) => {
 
