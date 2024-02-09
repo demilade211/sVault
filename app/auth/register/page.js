@@ -41,7 +41,7 @@ const Register = () => {
       cookie.set("userData", JSON.stringify(user), { expires: 1 })
 
       try {
-        let res = await sendOtp({ email: user.email })
+        let res = await sendOtp({ email: user.email.toLowerCase() })
         const { success, message } = res
         if (success === true) {
           router.push('/auth/verify-account')
