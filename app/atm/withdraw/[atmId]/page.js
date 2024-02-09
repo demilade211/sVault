@@ -68,6 +68,7 @@ const Atm = () => {
                 setShowFeedback(prev => ({ ...prev, message: res2.customMessage }))
                 const { isWithin24Hours, hoursLefts } = hoursLeft(res2.createdAt)
                 setAccountInfo(prev => ({ ...prev, bName: res2.name,hoursLeft:hoursLefts })) 
+                console.log(isWithin24Hours);
                 isWithin24Hours?setShowNotActive(prev => ({ ...prev, show: true })): setShowFeedback(prev => ({ ...prev, show: true }))
             } catch (error) {
                 setLoading(false)

@@ -31,7 +31,7 @@ const NotActive = ({name,mOpen,hoursLeft}) => {
       <Box sx={style}>
         <ModCon>
           <h1>Hi {name},</h1>
-          <p>Please be patient we know you can't wait to unlock your suprise you have <span>{hoursLeft} left</span></p> 
+          <p>Please be patient we know you can't wait to unlock your suprise you have <span>{Math.round(hoursLeft)}H left</span></p> 
         </ModCon>
 
       </Box>
