@@ -44,6 +44,8 @@ const OneAtm = () => {
     }
   }, []); 
 
+  console.log(history);
+
   return (
     <AppLayout>
       <Con>

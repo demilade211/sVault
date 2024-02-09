@@ -12,10 +12,13 @@ import Withdrawn from './subComponents/Withdrawn';
 import Insufficient from './subComponents/Insufficient';
 import PleaseWait from './subComponents/PleaseWait';
 import AtmLayout from '@/layouts/AtmLayout';
-import { checkPin, getBanks,getAccDet,withdraw } from "@/services/atm"
+import { checkPin, getBanks, getAccDet, withdraw, getNameMessage } from "@/services/atm"
 import { useRouter, useParams } from 'next/navigation'
 import MySnackBar from '@/components/MySnackBar';
 import catchErrors from '@/utils/catchErrors';
+import CustomMessage from '@/components/modals/CustomMessage';
+import { hoursLeft } from "@/utils/helpers";
+import NotActive from '@/components/modals/NotActive';
 
 const Atm = () => {
 
@@ -25,6 +28,14 @@ const Atm = () => {
     const [loading, setLoading] = useState(false)
     const [snackInfo, setSnackInfo] = useState({ openSnack: false, type: "", message: "" })
     const [banks, setBanks] = useState([]);
+    const [showFeedback, setShowFeedback] = useState({
+        show: false,
+        message: ""
+    });
+    const [showNotActive, setShowNotActive] = useState({
+        show: false,
+        message: ""
+    });
     const [otp, setOtp] = useState({
         otp: ""
     })
@@ -32,11 +43,17 @@ const Atm = () => {
         pin: otp,
         accNo: "",
         bankCode: "",
-        bankName:"",
+        bankName: "",
         amount: "",
-        recipient_code:"",
-        name:""
+        recipient_code: "",
+        name: "",
+        bName: "",
+        createdAt: "",
+        hoursLeft:""
     })
+
+    const handleFeedClose = () => setShowFeedback((prev) => ({ ...prev, show: false }));
+    const handleNotActiveClose = () => setShowNotActive((prev) => ({ ...prev, show: false }));
 
 
     useEffect(() => {
@@ -44,8 +61,14 @@ const Atm = () => {
             try {
                 setLoading(true)
                 const res = await getBanks()
+                const res2 = await getNameMessage(atmId)
                 setLoading(false)
                 setBanks(res.banks);
+                setAccountInfo(prev => ({ ...prev, bName: res2.name,createdAt:res2.createdAt }))
+                setShowFeedback(prev => ({ ...prev, message: res2.customMessage }))
+                const { isWithin24Hours, hoursLefts } = hoursLeft(res2.createdAt)
+                setAccountInfo(prev => ({ ...prev, bName: res2.name,hoursLeft:hoursLefts })) 
+                isWithin24Hours?setShowNotActive(prev => ({ ...prev, show: true })): setShowFeedback(prev => ({ ...prev, show: true }))
             } catch (error) {
                 setLoading(false)
                 setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
@@ -77,44 +100,44 @@ const Atm = () => {
 
 
         try {
-            let res = await getAccDet({accountNumber:accountInfo.accNo,bankCode:accountInfo.bankCode})
+            let res = await getAccDet({ accountNumber: accountInfo.accNo, bankCode: accountInfo.bankCode })
             setLoading(false)
-            const { success, message } = res 
-            setAccountInfo((prev)=>({...prev,recipient_code:res.recipient_code,name:res.reciepient.name}))
+            const { success, message } = res
+            setAccountInfo((prev) => ({ ...prev, recipient_code: res.recipient_code, name: res.reciepient.name }))
             if (success === true) {
                 return success
             } else {
-                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message })); 
+                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message }));
                 setLoading(false);
                 return success
-                
+
             }
-        } catch (error) {  
+        } catch (error) {
             setLoading(false);
             setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
         }
     }
 
     const withdrawCash = async (e) => {
-        setLoading(true) 
+        setLoading(true)
 
         try {
-            let res = await withdraw(atmId,{amount:accountInfo.amount,recipient_code:accountInfo.recipient_code})
+            let res = await withdraw(atmId, { amount: accountInfo.amount, recipient_code: accountInfo.recipient_code })
             setLoading(false)
-            const { success, message } = res  
+            const { success, message } = res
             if (success === true) {
                 return success
             } else {
-                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message })); 
+                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message }));
                 setLoading(false);
                 return success
-                
+
             }
-        } catch (error) {  
+        } catch (error) {
             setLoading(false);
             setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
         }
-    }
+    } 
 
     const handleAtmButtons = async (type) => {
         if (page === 0) {
@@ -147,7 +170,7 @@ const Atm = () => {
         if (page === 2) {
             if (type === "enter") {
                 if (accountInfo.bankCode.length > 0) {
-                    await validateAccount()&&setPage(3)
+                    await validateAccount() && setPage(3)
                 }
             }
 
@@ -158,7 +181,7 @@ const Atm = () => {
                 setAccountInfo(prev => ({ ...prev, amount: "" }))
             } else if (type === "enter") {
                 if (accountInfo.amount.length > 2) {
-                    await withdrawCash()?setPage(5):setPage(6)
+                    await withdrawCash() ? setPage(5) : setPage(6)
                 }
             } else {
                 setAccountInfo(prev => ({ ...prev, amount: prev.amount + type }))
@@ -166,11 +189,13 @@ const Atm = () => {
 
         }
 
-    } 
+    }
 
     return (
         <AtmLayout>
             <Con>
+                <NotActive mOpen={showNotActive.show} handleModClose={handleNotActiveClose} name={accountInfo.bName} hoursLeft={accountInfo.hoursLeft}/>
+                <CustomMessage mOpen={showFeedback.show} handleModClose={handleFeedClose} message={showFeedback.message} name={accountInfo.bName} />
                 <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
                 <Screen>
                     {(page === 0 && <Pin setOtp={setOtp} otp={otp} accountInfo={accountInfo} setAccountInfo={setAccountInfo} loading={loading} />)}

@@ -15,6 +15,21 @@ export const checkPin = async (atmId,data) => {
     } 
 }
 
+export const getNameMessage = async (atmId) => {
+
+
+    try {
+        const res = await axios.get(`/api/v1/atm/check/${atmId}`)
+
+        const { success, message } = res.data
+        return res.data 
+
+    } catch (error) {
+        return error;
+
+    } 
+}
+
 export const getBanks = async () => { 
 
     try {

@@ -86,7 +86,7 @@ const Register = () => {
         <RedInput type="password" label="Confirm Password"onChange={handleChange} name="confirmPassword"/>
         <AgreementCon>
           <input type='checkbox' onChange={handleCheck} />
-          <p>By signing up on Tuale, you agree our <span>terms of service </span>and <span>privacy policies.</span></p>
+          <p>By signing up on suprise vault, you agree our <span>terms of service </span>and <span>privacy policies.</span></p>
         </AgreementCon>
         <div className='flex justify-center mt-6'>
           <img src="/images/auth/or.png" alt="img" />
