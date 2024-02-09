@@ -166,9 +166,7 @@ const Atm = () => {
 
         }
 
-    }
-
-    console.log(accountInfo);
+    } 
 
     return (
         <AtmLayout>
