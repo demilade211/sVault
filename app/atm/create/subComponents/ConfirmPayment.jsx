@@ -16,6 +16,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
   const { user, status } = useSelector((state) => state.userReducer);
 
   const router = useRouter();
+  const [snackInfo, setSnackInfo] = useState({ openSnack: false, type: "", message: "" })
   const [active, setActive] = useState({
     email: "",
     authorization: {
@@ -49,11 +50,9 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
       if (response.data.paused) {
         router.push(response.data.authorization_url)
       } else {
-        setLoading(false)
-        handleModClose()
-        setShowFeedback((prev) => ({ ...prev, show: true, message: "Card Charged Successfully" }))
-        window.location.href = "/home"
-
+        setLoading(false) 
+        setSnackInfo((prev) => ({ ...prev, openSnack: true,type:"success", message: "Card Charged Successfully" }))
+        window.location.href = "/home" 
       }
     } else if (!response.success) {
       setLoading(false)
@@ -69,6 +68,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
       <div className='back-con' onClick={() => setPage(1)}>
         <img className='mr-3' src="/images/home/back.svg" alt="img" />
         <h1>Verify Charges</h1>
