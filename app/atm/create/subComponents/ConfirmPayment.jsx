@@ -52,7 +52,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
         setLoading(false)
         handleModClose()
         setShowFeedback((prev) => ({ ...prev, show: true, message: "Card Charged Successfully" }))
-        router.refresh()
+        window.location.href = "/home"
 
       }
     } else if (!response.success) {

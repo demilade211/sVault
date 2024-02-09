@@ -44,10 +44,10 @@ const VerifyAccount = () => {
     try {
       let res = await await registerUser(user, setSnackInfo, setButtonDisabled, setLoading)
       const { success, message, token } = res
-      if (success === true) {
-        router.push('/auth/success')
+      if (success === true) { 
         cookie.remove('userData')
         cookie.set("token", token, { expires: 365 })
+        window.location.href = "/home"
 
 
       } else {

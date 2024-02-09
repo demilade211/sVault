@@ -88,14 +88,14 @@ const Register = () => {
           <input type='checkbox' onChange={handleCheck} />
           <p>By signing up on suprise vault, you agree our <span>terms of service </span>and <span>privacy policies.</span></p>
         </AgreementCon>
+        <RedButton onClick={handleSubmit} content={`${loading ? 'loading...' : 'Proceed'}`} disabled={buttonDisabled} />
         <div className='flex justify-center mt-6'>
           <img src="/images/auth/or.png" alt="img" />
         </div>
         <GoogleDiv>
           <img src="/images/auth/google.svg" alt="img" />
           <p>Signup with Google</p>
-        </GoogleDiv>
-        <RedButton onClick={handleSubmit} content={`${loading ? 'loading...' : 'Proceed'}`} disabled={buttonDisabled} />
+        </GoogleDiv> 
       </Con>
     </AppLayout>
   )
@@ -179,7 +179,7 @@ const GoogleDiv = styled.div`
 const AgreementCon = styled.div`
     font-weight: 400;
     font-size: 12px; 
-    margin-top:50px;
+    margin-top:20px;
     margin-bottom:20px;
     display:flex;
     input{
@@ -188,7 +188,7 @@ const AgreementCon = styled.div`
     p{
         margin-left:10px;
         span{
-            color:#D88B07;
+            color:rgba(255, 0, 0, 1);
             cursor: pointer
         }
     }
