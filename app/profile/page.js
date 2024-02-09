@@ -29,7 +29,7 @@ const Profile = () => {
         </div>
         <SummaryCon2>
           <div className="letter-con">
-            <p>{user.name.split(" ")[0].split("")[0]}</p>
+            <p>{user?.name.split(" ")[0].split("")[0]}</p>
           </div>
           <p className="cb-para">HI, {user?.name?.split(" ")[0]}</p>
         </SummaryCon2>
@@ -40,11 +40,11 @@ const Profile = () => {
           </div>
           <div className='row top'>
             <p className='title'>Full Name</p>
-            <p className='value'>{user.name}</p>
+            <p className='value'>{user?.name}</p>
           </div>
           <div className='row bottom'>
             <p className='title'>Email</p>
-            <p className='value'>{user.email}</p>
+            <p className='value'>{user?.email}</p>
           </div>
         </Row>
         <Row>
