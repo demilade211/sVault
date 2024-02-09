@@ -88,6 +88,7 @@ const VerifyAccount = () => {
             value={otp.otp}
             onChange={handleChange}
             numInputs={5}
+            inputType='number'
             placeholder=''
             inputStyle={{
               width: "100%",
