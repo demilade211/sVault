@@ -4,22 +4,22 @@ import React, { useState } from 'react'
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 
-const AccountNumber = ({accountInfo,setAccountInfo}) => {
+const AccountNumber = ({ accountInfo, setAccountInfo }) => {
 
-    const handleChange = (e) => {
-        const { name, value } = e.target// takes the name and vale of event currently changing
-        setAccountInfo(prev => ({ ...prev, [name]: value }))
-    } 
+  const handleChange = (e) => {
+    const { name, value } = e.target// takes the name and vale of event currently changing
+    setAccountInfo(prev => ({ ...prev, [name]: value }))
+  }
 
-    return (
-        <Con>
-            <h1>Account Number</h1>
-            <p className='sub'>Verify Account Number</p>
-            <p className='info'>Account Number</p>
-            <GreyInput type="text" placeholder="0.00" value={accountInfo.accNo} name="accNo" onChange={handleChange}/>
-            <p className='instruction'>Press <span>Enter</span> to continue</p>
-        </Con>
-    )
+  return (
+    <Con>
+      <h1>Account Number</h1>
+      <p className='sub'>Verify Account Number</p>
+      <p className='info'>Account Number</p>
+      <GreyInput type="text" placeholder="0.00" value={accountInfo.accNo} name="accNo" onChange={handleChange} />
+      <p className='instruction'>Press <span>Enter</span> to continue</p>
+    </Con>
+  )
 }
 
 const Con = styled.div`  

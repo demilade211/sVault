@@ -17,7 +17,7 @@ const Bank = ({ setAccountInfo, accountInfo, loading,banks }) => {
           <PleaseWait />
           :
           <Con>
-            <h1>Hi Dayo</h1>
+            <h1>Good day</h1>
             <p className='sub'>Input Bank name to be Credited</p>
             <p className='info'>Bank  Name</p>
             <AtmSelect onChange={handleSelect} options={banks.map(bank => ({ value: bank.code, label: bank.name }))} selected={accountInfo.bankCode} />

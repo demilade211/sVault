@@ -16,7 +16,7 @@ const Pin = ({ setOtp, otp, loading }) => {
       {loading ? <PleaseWait />
         :
         <Con>
-          <h1>Hi Dayor</h1>
+          <h1>Good day</h1>
           <p className='sub'>Welcome to Suprisevault</p>
           <p className='info'>Input Your four digits pin to continue</p>
           <div className='flex justify-center'>
