@@ -46,7 +46,7 @@ const Main = () => {
                         <p>A Good day to gift a friend cash</p>
                     </div>
                     <div onClick={() => router.push(`/profile`)}>
-                        <img className='' src="/images/home/profile.svg" alt="img" />
+                        <img className='' src="/images/home/profile1.svg" alt="img" />
                     </div>
                 </HeadCon>
                 <CreateCon>
@@ -73,7 +73,7 @@ const Main = () => {
                                 <Atms>
                                     <div>
                                         <h3>{val.beneficiaryName}</h3>
-                                        <p className='sub2'>{`${shortenString(`suprisevault.com/atm/withdraw/${val._id}`, 30)}`}</p>
+                                        <p className='sub2'>{`${shortenString(`suprisevault.online/atm/withdraw/${val._id}`, 30)}`}</p>
                                     </div>
                                     <SmallBtn onClick={() => router.push(`/atm/${val._id}`)}>Monitor</SmallBtn>
                                 </Atms>

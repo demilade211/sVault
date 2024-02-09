@@ -75,10 +75,10 @@ const OneAtm = () => {
             <div className="row">
               <p className="left">Link:</p>
               <CopyToClipboard
-                text={`suprisevault.com/atm/withdraw/${atmId}`}
+                text={`suprisevault.online/atm/withdraw/${atmId}`}
                 onCopy={() => setSnackInfo(prev => ({ ...prev, openSnack: true, type: "success", message: "Link copied to clip board" }))}
               >
-                <p className="right">{shortenString(`suprisevault.com/atm/withdraw/${atmId}`, 20)}<img className='ml-2' src="/images/home/copy1.svg" alt="img" /></p>
+                <p className="right">{shortenString(`suprisevault.online/atm/withdraw/${atmId}`, 20)}<img className='ml-2' src="/images/home/copy1.svg" alt="img" /></p>
               </CopyToClipboard>
             </div>
             <div className="row">

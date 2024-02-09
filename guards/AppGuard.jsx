@@ -18,6 +18,7 @@ const AppGuard = ({ children }) => {
   const protectedRoutes = pathname === "/home"
     || pathname === "/atm/[atmId]" 
     || pathname === "/atm/create" 
+    || pathname === "/profile" 
 
   const dispatch = useDispatch();
 
