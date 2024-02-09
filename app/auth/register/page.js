@@ -72,6 +72,7 @@ const Register = () => {
   return (
     <AppLayout>
       <Con>
+      <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
         <div className='back-con' onClick={() => router.push(`/`)}>
           <img className='mr-3' src="/images/home/back.svg" alt="img" />
         </div>

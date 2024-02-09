@@ -18,10 +18,8 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <StyledComponentsRegistry>
-          <StoreProvider>
-            <AppGuard>
-              {children}
-            </AppGuard>
+          <StoreProvider> 
+              {children} 
           </StoreProvider>
         </StyledComponentsRegistry>
       </body>

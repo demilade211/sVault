@@ -42,9 +42,7 @@ const OneAtm = () => {
       setLoading(false)
       alert(error)
     }
-  }, []);
-
-  console.log(atm);
+  }, []); 
 
   return (
     <AppLayout>
@@ -108,7 +106,7 @@ const OneAtm = () => {
           history.map((val, index) => (
             <WithdrawalAttempt key={index}>
               <div className='left'>
-                <img className='mr-3' src={`/images/home/${val.status === "wrong" ? "fail" : "suc"}.svg`} alt="img" />
+                <img className='mr-3' src={`/images/home/${val.withdrawal_status === "wrong" ? "fail" : "suc"}.svg`} alt="img" />
                 <div>
                   <p className='top'>Atm Withdrawal</p>
                   <p className='bottom'>{moment(atm.createdAt).subtract(10, 'days').calendar()}</p>

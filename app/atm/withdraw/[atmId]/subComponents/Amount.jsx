@@ -3,20 +3,28 @@
 import React, { useState } from 'react'
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
+import PleaseWait from './PleaseWait';
 
-const Amount = ({ accountInfo, setAccountInfo }) => {
+const Amount = ({ accountInfo, setAccountInfo, loading }) => {
   const handleChange = (e) => {
     const { name, value } = e.target// takes the name and vale of event currently changing
     setAccountInfo(prev => ({ ...prev, [name]: value }))
   }
   return (
-    <Con>
-      <h1>Withdraw Cash To Account</h1>
-      <p className='sub'>Enter Amount to Withdraw</p>
-      <p className='info'>Here comes the mystery</p>
-      <GreyInput type="text" placeholder="N0.00" value={accountInfo.amount} name="amount" onChange={handleChange} />
-      <p className='instruction'>Press <span>Enter</span> to continue</p>
-    </Con>
+    <>
+      {
+        loading ?
+          <PleaseWait />
+          :
+          <Con>
+            <h1>Withdraw Cash To Account</h1>
+            <p className='sub'>Enter Amount to Withdraw</p>
+            <p className='info'>Here comes the mystery</p>
+            <GreyInput type="text" placeholder="N0.00" value={accountInfo.amount} name="amount" onChange={handleChange} />
+            <p className='instruction'>Press <span>Enter</span> to continue</p>
+          </Con>
+      }
+    </>
   )
 }
 

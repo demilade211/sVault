@@ -1,3 +1,4 @@
+import AppGuard from '@/guards/AppGuard';
 import React from 'react'
 import styled from 'styled-components';
 
@@ -5,7 +6,9 @@ const AppLayout = ({ children }) => {
   return (
     <Con>
       <div className='inner'>
-        {children}
+        <AppGuard>
+          {children}
+        </AppGuard> 
       </div>
     </Con>
   )

@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import AtmSelect from '@/components/AtmSelect';
 
-const VerifyAccount = ({setPage}) => {
+const VerifyAccount = ({setPage,accountInfo}) => {
   return (
     <Con>
       <h1>Verify Account</h1>
@@ -13,15 +13,15 @@ const VerifyAccount = ({setPage}) => {
       <div className='summ'>
         <div className='row'>
           <p className='det'>Bank:</p>
-          <p className='det'>FirstBank</p>
+          <p className='det'>{accountInfo.bankName}</p>
         </div>
         <div className='row'>
           <p className='det'>Account Number:</p>
-          <p className='det'>0000000000</p>
+          <p className='det'>{accountInfo.accNo}</p>
         </div>
         <div className='row'>
           <p className='det'>Account Name:</p>
-          <p className='det'>Dayor Oginni</p>
+          <p className='det'>{accountInfo.name}</p>
         </div>
       </div>
       <div className='btns'>

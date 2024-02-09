@@ -4,19 +4,27 @@ import React, { useState } from 'react'
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import AtmSelect from '@/components/AtmSelect';
+import PleaseWait from './PleaseWait';
 
-const Bank = ({setAccountInfo,accountInfo}) => {
+const Bank = ({ setAccountInfo, accountInfo, loading,banks }) => {
 
-  const handleSelect = (val) => setAccountInfo(prev => ({ ...prev, bankCode:val.value }));
+  const handleSelect = (val) => setAccountInfo(prev => ({ ...prev, bankCode: val.value,bankName:val.label }));
 
   return (
-    <Con>
-      <h1>Hi Dayo</h1>
-      <p className='sub'>Input Bank name to be Credited</p>
-      <p className='info'>Bank  Name</p>
-      <AtmSelect onChange={handleSelect} options={[{label:"UBA",value:"1"}]}  />
-      <p className='instruction'>Press <span>Enter</span> to continue</p>
-    </Con>
+    <>
+      {
+        loading ?
+          <PleaseWait />
+          :
+          <Con>
+            <h1>Hi Dayo</h1>
+            <p className='sub'>Input Bank name to be Credited</p>
+            <p className='info'>Bank  Name</p>
+            <AtmSelect onChange={handleSelect} options={banks.map(bank => ({ value: bank.code, label: bank.name }))} selected={accountInfo.bankCode} />
+            <p className='instruction'>Press <span>Enter</span> to continue</p>
+          </Con>
+      }
+    </>
   )
 }
 

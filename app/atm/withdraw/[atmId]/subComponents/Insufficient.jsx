@@ -5,15 +5,15 @@ import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import AtmSelect from '@/components/AtmSelect';
 
-const Insufficient = () => {
+const Insufficient = ({setPage}) => {
   return (
     <Con>
       <div className='mb-6'><img className='mr-3' src="/images/components/ins.svg" alt="img" /></div>
       <h1>Insuficient Balance</h1>
       <p className='sub'>Would you like to try again?</p>
       <div className='btns'>
-        <Btn className="mr-3" onClick={() => setPage(1)}>Edit</Btn>
-        <Btn onClick={() => setPage(4)}>Proceed</Btn>
+        <Btn className="mr-3" onClick={() => setPage(1)}>No</Btn>
+        <Btn onClick={() => setPage(4)}>Yes</Btn>
       </div>
     </Con>
   )

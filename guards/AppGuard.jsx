@@ -30,7 +30,9 @@ const AppGuard = ({ children }) => {
       dispatch(HideLoader())
       if (response.success) {
         dispatch(SetUser(response.user))
-        router.push("/home");
+        // if(!protectedRoutes){
+        //   router.push("/home");
+        // }
       } else {
         if (response.message === "JSON Web Token is expired. Try Again!!!") {
           dispatch(SetExpired("expired"))

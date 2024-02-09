@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import Pin from './subComponents/Pin';
@@ -10,28 +10,119 @@ import VerifyAccount from './subComponents/VerifyAccount';
 import Amount from './subComponents/Amount';
 import Withdrawn from './subComponents/Withdrawn';
 import Insufficient from './subComponents/Insufficient';
+import PleaseWait from './subComponents/PleaseWait';
 import AtmLayout from '@/layouts/AtmLayout';
+import { checkPin, getBanks,getAccDet,withdraw } from "@/services/atm"
+import { useRouter, useParams } from 'next/navigation'
+import MySnackBar from '@/components/MySnackBar';
+import catchErrors from '@/utils/catchErrors';
 
 const Atm = () => {
 
+    const params = useParams()
+    const { atmId } = params
     const [page, setPage] = useState(0)
-    const [accountInfo, setAccountInfo] = useState({
-        pin: "",
-        accNo: "",
-        bankCode: "",
-        amount: ""
-    })
+    const [loading, setLoading] = useState(false)
+    const [snackInfo, setSnackInfo] = useState({ openSnack: false, type: "", message: "" })
+    const [banks, setBanks] = useState([]);
     const [otp, setOtp] = useState({
         otp: ""
     })
+    const [accountInfo, setAccountInfo] = useState({
+        pin: otp,
+        accNo: "",
+        bankCode: "",
+        bankName:"",
+        amount: "",
+        recipient_code:"",
+        name:""
+    })
 
-    const handleAtmButtons = (type) => {
+
+    useEffect(() => {
+        const getBankss = async () => {
+            try {
+                setLoading(true)
+                const res = await getBanks()
+                setLoading(false)
+                setBanks(res.banks);
+            } catch (error) {
+                setLoading(false)
+                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
+            }
+        }
+        getBankss();
+    }, [])
+
+    const handleCheckPin = async () => {
+        setLoading(true)
+        try {
+            let res = await checkPin(atmId, { pin: otp.otp })
+            setLoading(false);
+            const { success, message } = res
+            if (success === true) {
+                return success
+            } else {
+                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message }));
+                return success
+            }
+        } catch (error) {
+            setLoading(false);
+            setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
+        }
+    }
+
+    const validateAccount = async (e) => {
+        setLoading(true)
+
+
+        try {
+            let res = await getAccDet({accountNumber:accountInfo.accNo,bankCode:accountInfo.bankCode})
+            setLoading(false)
+            const { success, message } = res 
+            setAccountInfo((prev)=>({...prev,recipient_code:res.recipient_code,name:res.reciepient.name}))
+            if (success === true) {
+                return success
+            } else {
+                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message })); 
+                setLoading(false);
+                return success
+                
+            }
+        } catch (error) {  
+            setLoading(false);
+            setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
+        }
+    }
+
+    const withdrawCash = async (e) => {
+        setLoading(true) 
+
+        try {
+            let res = await withdraw(atmId,{amount:accountInfo.amount,recipient_code:accountInfo.recipient_code})
+            setLoading(false)
+            const { success, message } = res  
+            if (success === true) {
+                return success
+            } else {
+                setSnackInfo(prev => ({ ...prev, openSnack: true, type: "warning", message: message })); 
+                setLoading(false);
+                return success
+                
+            }
+        } catch (error) {  
+            setLoading(false);
+            setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
+        }
+    }
+
+    const handleAtmButtons = async (type) => {
         if (page === 0) {
             if (type === "delete") {
                 setOtp(prev => ({ ...prev, otp: "" }))
             } else if (type === "enter") {
                 if (otp.otp.length === 4) {
-                    setPage(1)
+                    await handleCheckPin() && setPage(1)
                 }
             } else {
                 if (otp.otp.length < 4) {
@@ -56,7 +147,7 @@ const Atm = () => {
         if (page === 2) {
             if (type === "enter") {
                 if (accountInfo.bankCode.length > 0) {
-                    setPage(3)
+                    await validateAccount()&&setPage(3)
                 }
             }
 
@@ -67,7 +158,7 @@ const Atm = () => {
                 setAccountInfo(prev => ({ ...prev, amount: "" }))
             } else if (type === "enter") {
                 if (accountInfo.amount.length > 2) {
-                    setPage(5)
+                    await withdrawCash()?setPage(5):setPage(6)
                 }
             } else {
                 setAccountInfo(prev => ({ ...prev, amount: prev.amount + type }))
@@ -75,19 +166,22 @@ const Atm = () => {
 
         }
 
-    } 
+    }
+
+    console.log(accountInfo);
 
     return (
         <AtmLayout>
             <Con>
+                <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
                 <Screen>
-                    {page === 0 && <Pin setOtp={setOtp} otp={otp} accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
-                    {page === 1 && <AccountNumber accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
-                    {page === 2 && <Bank accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
-                    {page === 3 && <VerifyAccount accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage} />}
-                    {page === 4 && <Amount accountInfo={accountInfo} setAccountInfo={setAccountInfo} />}
-                    {page === 5 && <Withdrawn accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage}/>}
-                    {page === 6 && <Insufficient accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage}/>}
+                    {(page === 0 && <Pin setOtp={setOtp} otp={otp} accountInfo={accountInfo} setAccountInfo={setAccountInfo} loading={loading} />)}
+                    {page === 1 && <AccountNumber accountInfo={accountInfo} setAccountInfo={setAccountInfo} loading={loading} />}
+                    {page === 2 && <Bank accountInfo={accountInfo} setAccountInfo={setAccountInfo} loading={loading} banks={banks} />}
+                    {page === 3 && <VerifyAccount accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage} loading={loading} />}
+                    {page === 4 && <Amount accountInfo={accountInfo} setAccountInfo={setAccountInfo} loading={loading} />}
+                    {page === 5 && <Withdrawn accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage} loading={loading} />}
+                    {page === 6 && <Insufficient accountInfo={accountInfo} setAccountInfo={setAccountInfo} setPage={setPage} loading={loading} />}
                 </Screen>
                 <KeysCon>
                     <button className='key' onClick={() => handleAtmButtons(1)}>

@@ -4,43 +4,49 @@ import React, { useState } from 'react'
 import AppLayout from '@/layouts/AppLayout';
 import styled from 'styled-components';
 import OtpInput from 'react-otp-input';
+import PleaseWait from './PleaseWait';
 
-const Pin = ({setOtp,otp}) => {
+const Pin = ({ setOtp, otp, loading }) => {
 
-     
 
-    const handleChange = (otp) => setOtp(prev => ({ ...prev, otp }));
-    return (
+
+  const handleChange = (otp) => setOtp(prev => ({ ...prev, otp }));
+  return (
+    <>
+      {loading ? <PleaseWait />
+        :
         <Con>
-            <h1>Hi Dayor</h1>
-            <p className='sub'>Welcome to Suprisevault</p>
-            <p className='info'>Input Your four digits pin to continue</p>
-            <div className='flex justify-center'>
-                <OtpInput
-                    value={otp.otp}
-                    onChange={handleChange}
-                    numInputs={4} 
-                    inputStyle={{
-                        width: "41px",
-                        height: "41px",
-                        background: "rgba(255, 255, 255, 0.12)",
-                        border: "none",
-                        boxShadow: "0px 1px 2px rgba(16, 24, 40, 0.05)",
-                        borderRadius: "10px",
-                        fontWeight: "400",
-                        fontSize: "20px",
-                        color: "white",
-                        marginRight: "8px",
-                        padding: "8px",
-                        outline: "none"
-                    }}
-                    renderInput={(props) => <input {...props} />}
-                    containerStyle={{ marginBottom: "30px" }}
-                />
-            </div>
-            <p className='instruction'>Press <span>Enter</span> to continue</p>
+          <h1>Hi Dayor</h1>
+          <p className='sub'>Welcome to Suprisevault</p>
+          <p className='info'>Input Your four digits pin to continue</p>
+          <div className='flex justify-center'>
+            <OtpInput
+              value={otp.otp}
+              onChange={handleChange}
+              numInputs={4}
+              inputStyle={{
+                width: "41px",
+                height: "41px",
+                background: "rgba(255, 255, 255, 0.12)",
+                border: "none",
+                boxShadow: "0px 1px 2px rgba(16, 24, 40, 0.05)",
+                borderRadius: "10px",
+                fontWeight: "400",
+                fontSize: "20px",
+                color: "white",
+                marginRight: "8px",
+                padding: "8px",
+                outline: "none"
+              }}
+              renderInput={(props) => <input {...props} />}
+              containerStyle={{ marginBottom: "30px" }}
+            />
+          </div>
+          <p className='instruction'>Press <span>Enter</span> to continue</p>
         </Con>
-    )
+      }
+    </>
+  )
 }
 
 const Con = styled.div`  
