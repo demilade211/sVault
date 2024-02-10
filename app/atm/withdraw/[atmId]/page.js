@@ -83,14 +83,14 @@ const Atm = () => {
                     setShowNotActive(prev => ({ ...prev, show: true }));
 
                 } else if (isFriday(res2.createdAt) || isSaturday(res2.createdAt)) {
-                    if (isFriday(new Date()) || isSaturday(new Date())) {
+                    if (isFriday(new Date()) || isSaturday(new Date()) || isSunday(new Date())) {
 
                         setShowItsWeekend(prev => ({ ...prev, show: true }));
                     }
                 } else {
 
                     setShowFeedback(prev => ({ ...prev, show: true })); // Set showFeedback to true
-                    
+
                 }
 
             } catch (error) {
