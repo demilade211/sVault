@@ -77,17 +77,22 @@ const Atm = () => {
                 setShowFeedback(prev => ({ ...prev, message: res2.customMessage }))
                 const { isWithin24Hours, hoursLefts } = hoursLeft(res2.createdAt)
                 setAccountInfo(prev => ({ ...prev, bName: res2.name, hoursLeft: hoursLefts }))
-                console.log(isWithin24Hours);
+
                 if (isWithin24Hours) {
-                    // Check if createdAt date is Friday or Saturday
-                    if (isFriday(res2.createdAt) || isSaturday(res2.createdAt)) {
-                        setShowItsWeekend(prev => ({ ...prev, show: true }))
-                    } else {
-                        setShowNotActive(prev => ({ ...prev, show: true })); // Set showNotActive to true
+
+                    setShowNotActive(prev => ({ ...prev, show: true }));
+
+                } else if (isFriday(res2.createdAt) || isSaturday(res2.createdAt)) {
+                    if (isFriday(new Date()) || isSaturday(new Date())) {
+
+                        setShowItsWeekend(prev => ({ ...prev, show: true }));
                     }
                 } else {
+
                     setShowFeedback(prev => ({ ...prev, show: true })); // Set showFeedback to true
+                    
                 }
+
             } catch (error) {
                 setLoading(false)
                 setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
