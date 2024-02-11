@@ -19,7 +19,7 @@ import catchErrors from '@/utils/catchErrors';
 import CustomMessage from '@/components/modals/CustomMessage';
 import { hoursLeft } from "@/utils/helpers";
 import NotActive from '@/components/modals/NotActive';
-import { isFriday, isSaturday } from 'date-fns'; // Import date-fns functions to check if the createdAt date is Friday or Saturday
+import { isFriday, isSaturday,isSunday } from 'date-fns'; // Import date-fns functions to check if the createdAt date is Friday or Saturday
 import Weekend from '@/components/modals/Weekend';
 
 
