@@ -87,7 +87,7 @@ const Atm = () => {
 
                         setShowItsWeekend(prev => ({ ...prev, show: true }));
                     }
-                } else {
+                } if(!isWithin24Hours) {
 
                     setShowFeedback(prev => ({ ...prev, show: true })); // Set showFeedback to true
 

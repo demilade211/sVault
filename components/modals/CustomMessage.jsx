@@ -12,10 +12,12 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: "321px",
   height: "auto",
+  maxHeight:"500px",
   bgcolor: 'background.paper',
   borderRadius: "30px",
   outline: "none",
   padding: "20px",
+  overflowY:"scroll",
   '@media (max-width: 500px)': {
     width: "90%",
   },
