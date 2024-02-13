@@ -81,7 +81,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
         </div>
         <div className='row flex justify-between'>
           <p className='name'>Service Charge</p>
-          <p className='price'>N1,000.00</p>
+          <p className='price'>N500.00</p>
         </div>
         <div className='row flex justify-between'>
           <p className='name'>Card Charge</p>
