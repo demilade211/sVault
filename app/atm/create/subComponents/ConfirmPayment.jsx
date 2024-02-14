@@ -89,7 +89,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
         </div>
         <div className='row flex justify-between'>
           <p className='name'>Total</p>
-          <p className='price'>N{withdrawalAmount + 1000}</p>
+          <p className='price'>N{withdrawalAmount + 500}</p>
         </div>
       </CostSummaryCon>
       {user.authorizations.lenghth !== 0 &&

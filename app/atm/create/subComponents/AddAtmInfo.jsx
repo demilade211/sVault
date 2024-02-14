@@ -58,7 +58,7 @@ const AddAtmInfo = ({ setPage,setAtmInfo,atmInfo,handleChange }) => {
       <RedTextArea type="textarea" name='customMessage' value={atmInfo.customMessage} onChange={handleChange}></RedTextArea>
       <NoteCon>
         <h3>Note</h3>
-        <p>A Charge fee of <span className='cancel'>NGN2,050.00</span> <span className='bold'>NGN1,050.00</span>  Will
+        <p>A Charge fee of <span className='cancel'>NGN2,050.00</span> <span className='bold'>NGN500.00</span>  Will
           be added to the amount recharged</p>
       </NoteCon>
       <RedButton content="Next" onClick={() => setPage(2)} />
