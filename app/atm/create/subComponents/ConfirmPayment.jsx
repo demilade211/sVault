@@ -34,7 +34,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
 
   const handlePayment = async () => {
     setLoading(true)
-    let response = await initialize({...atmInfo,amount:withdrawalAmount + 1000})
+    let response = await initialize({...atmInfo,amount:withdrawalAmount + 500})
     if (response.success) {
       setLoading(false)
       router.push(response.authorization_url)
@@ -46,7 +46,7 @@ const ConfirmPayment = ({ setPage, atmInfo }) => {
 
   const handleCardCharge = async () => {
     setLoading(true)
-    let response = await makeRecurringPayment(withdrawalAmount + 1000, active.email, active.authorization.authorization_code, atmInfo)
+    let response = await makeRecurringPayment(withdrawalAmount + 500, active.email, active.authorization.authorization_code, atmInfo)
     if (response.success) {
       if (response.data.paused) {
         router.push(response.data.authorization_url)

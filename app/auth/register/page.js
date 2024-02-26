@@ -19,7 +19,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const [snackInfo, setSnackInfo] = useState({ openSnack: false, type: "", message: "" })
   const [user, setUser] = useState({
-    name:"",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -72,7 +72,7 @@ const Register = () => {
   return (
     <AppLayout>
       <Con>
-      <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
+        <MySnackBar setSnackInfo={setSnackInfo} snackInfo={snackInfo} />
         <div className='back-con' onClick={() => router.push(`/`)}>
           <img className='mr-3' src="/images/home/back.svg" alt="img" />
         </div>
@@ -80,10 +80,10 @@ const Register = () => {
           <h1>Step 1/2</h1>
           <p>Create Account</p>
         </HeadCon>
-        <RedInput type="text" label="Full name" onChange={handleChange} name="name"/>
-        <RedInput type="email" label="Email" onChange={handleChange} name="email"/>
-        <RedInput type="password" label="Password" onChange={handleChange} name="password"/>
-        <RedInput type="password" label="Confirm Password"onChange={handleChange} name="confirmPassword"/>
+        <RedInput type="text" label="Full name" onChange={handleChange} name="name" />
+        <RedInput type="email" label="Email" onChange={handleChange} name="email" />
+        <RedInput type="password" label="Password" onChange={handleChange} name="password" />
+        <RedInput type="password" label="Confirm Password" onChange={handleChange} name="confirmPassword" />
         <AgreementCon>
           <input type='checkbox' onChange={handleCheck} />
           <p>By signing up on suprise vault, you agree our <span>terms of service </span>and <span>privacy policies.</span></p>
@@ -95,7 +95,7 @@ const Register = () => {
         <GoogleDiv>
           <img src="/images/auth/google.svg" alt="img" />
           <p>Signup with Google</p>
-        </GoogleDiv> 
+        </GoogleDiv>
       </Con>
     </AppLayout>
   )

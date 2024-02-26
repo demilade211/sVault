@@ -42,7 +42,7 @@ const VerifyAccount = () => {
     setLoading(true)
     await verifyEmailOtp({ otp: otp.otp }, setSnackInfo, setButtonDisabled, setLoading)
     try {
-      let res = await await registerUser(user, setSnackInfo, setButtonDisabled, setLoading)
+      let res = await registerUser(user, setSnackInfo, setButtonDisabled, setLoading)
       const { success, message, token } = res
       if (success === true) { 
         cookie.remove('userData')
@@ -59,11 +59,7 @@ const VerifyAccount = () => {
       setButtonDisabled(false);
       setLoading(false);
       setSnackInfo(prev => ({ ...prev, openSnack: true, type: "error", message: catchErrors(error) }))
-    }
-
-    await registerUser(user, setSnackInfo, setButtonDisabled, setLoading)
-
-
+    }  
   }
 
   const handleChange = (otp) => setOtp(prev => ({ ...prev, otp }));
