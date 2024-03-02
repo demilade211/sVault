@@ -61,11 +61,11 @@ const Analytics = () => {
                                 <img className='mr-3' src="/images/home/mail.svg" alt="img" />
                                 <div>
                                     <p className='top'>{val.email.slice(0, 20)}...</p>
-                                    <p className='bottom'>11|02|2024</p>
+                                    <p className='bottom'>{moment(val.createdAt).format('MM/DD/YYYY')}</p>
                                 </div>
                             </div>
                             <div className='right'>
-                                <p className='bottom'>02:33PM</p>
+                                <p className='bottom'>{moment(val.createdAt).format('h:mm a')}</p>
                             </div>
                         </DetList>
                     ))
@@ -83,7 +83,7 @@ const Analytics = () => {
                             </div>
                             <div className='right'>
                                 <p className={`top ${val.isFunded?"green":"red"}`}>{val.isFunded?"Funded":"Not-funded"}</p>
-                                <p className='bottom'>02:33PM</p>
+                                <p className='bottom'>{moment(val.createdAt).format('h:mm a')}</p>
                             </div>
                         </DetList>
                     ))

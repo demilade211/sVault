@@ -111,12 +111,12 @@ const OneAtm = () => {
                 <img className='mr-3' src={`/images/home/${val.withdrawal_status === "wrong" ? "fail" : "suc"}.svg`} alt="img" />
                 <div>
                   <p className='top'>Atm Withdrawal</p>
-                  <p className='bottom'>{moment(atm.createdAt).subtract(10, 'days').calendar()}</p>
+                  <p className='bottom'>{moment(atm.createdAt).format('MM/DD/YYYY')}</p>
                 </div>
               </div>
               <div className='right'>
                 <p className='top'>-{val.amount}</p>
-                <p className='bottom'>{moment(atm.createdAt).format('LT')}</p>
+                <p className='bottom'>{moment(atm.createdAt).format('h:mm a')}</p>
               </div>
             </WithdrawalAttempt>
           ))
