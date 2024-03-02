@@ -42,7 +42,7 @@ const OneAtm = () => {
       setLoading(false)
       alert(error)
     }
-  }, []); 
+  }, []);
 
   console.log(history);
 

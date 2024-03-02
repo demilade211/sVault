@@ -14,10 +14,10 @@ const Profile = () => {
   const router = useRouter();
 
   const logOut = () => {
-    window.location.href = "/auth/login" 
+    window.location.href = "/auth/login"
     cookie.remove("token");
     router.refresh()
- 
+
   }
 
   return (
@@ -47,6 +47,17 @@ const Profile = () => {
             <p className='value'>{user?.email}</p>
           </div>
         </Row>
+        {user?.role==="admin"&&<Row>
+          <div className='head'>
+            <p>Admin</p>
+          </div>
+          <div className='row top' onClick={() => router.push(`/profile/admin/analytics`)}>
+            <p className='title'>Analytics</p>
+            <div>
+              <img className='' src="/images/home/enter.svg" alt="img" />
+            </div>
+          </div>
+        </Row>}
         <Row>
           <div className='head'>
             <p>Support</p>
@@ -65,10 +76,10 @@ const Profile = () => {
             <p>Legal</p>
           </div>
           <div className='row top'>
-            <p className='title'><img className='mr-3' src="/images/home/info.svg" alt="img" />Terms of Service</p> 
+            <p className='title'><img className='mr-3' src="/images/home/info.svg" alt="img" />Terms of Service</p>
           </div>
           <div className='row bottom'>
-            <p className='title'><img className='mr-3' src="/images/home/info.svg" alt="img" />Privacy Policy</p> 
+            <p className='title'><img className='mr-3' src="/images/home/info.svg" alt="img" />Privacy Policy</p>
           </div>
         </Row>
       </Con>

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { SetUser, SetExpired } from "@/redux/slices/userSlice";
+import { SetUser, SetExpired,SetAdmin } from "@/redux/slices/userSlice";
 import { ShowLoader, HideLoader } from "@/redux/slices/loaderSlice";
 import { getLoggedInUser } from "@/services/auth"
 import cookie from "js-cookie"
@@ -19,6 +19,7 @@ const AppGuard = ({ children }) => {
     || pathname === "/atm/[atmId]" 
     || pathname === "/atm/create" 
     || pathname === "/profile" 
+    || pathname === "/profile/admin/analytics" 
 
   const dispatch = useDispatch();
 
@@ -29,8 +30,10 @@ const AppGuard = ({ children }) => {
       dispatch(ShowLoader())
       const response = await getLoggedInUser()
       dispatch(HideLoader())
+      console.log(response);
       if (response.success) {
         dispatch(SetUser(response.user))
+        dispatch(SetAdmin(response.admin))
         // if(!protectedRoutes){
         //   router.push("/home");
         // }

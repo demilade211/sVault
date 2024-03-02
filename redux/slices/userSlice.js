@@ -4,13 +4,17 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     user: null,
-    status:"Unauthenticated"   
+    status:"Unauthenticated",
+    admin:null
   },
 
   reducers: {
     SetUser: (state, action) => {
       state.user = action.payload;
       state.status="Authenticated"
+    },
+    SetAdmin: (state, action) => {
+      state.admin = action.payload; 
     },
     SetExpired: (state, action) => { 
       state.status=action.payload
@@ -30,6 +34,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { SetUser , SetExpired,AddToCart,RemoveFromCart,AddToWish,RemoveFromWish } = userSlice.actions;
+export const { SetUser ,SetAdmin, SetExpired,AddToCart,RemoveFromCart,AddToWish,RemoveFromWish } = userSlice.actions;
 
 export default userSlice.reducer;
