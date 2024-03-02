@@ -4,12 +4,19 @@ import AppLayout from '@/layouts/AppLayout';
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import { useRouter, usePathname } from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux'
+import moment from "moment"
 
 const Analytics = () => {
 
     const router = useRouter();
-    const [atms, setAtms] = useState([{}, {}])
-    const [users, setUsers] = useState([{}, {}])
+    const { user, admin } = useSelector((state) => state.userReducer);
+    const [atms, setAtms] = useState([])
+    const [users, setUsers] = useState([])
+
+    //const trimmedText = product.description.slice(0, 25);
+
+    console.log(admin);
 
     return (
         <AppLayout>
@@ -22,20 +29,20 @@ const Analytics = () => {
                     <div className='top'>
                         <div>
                             <p className='light-para'>Total Sign Ups</p>
-                            <p className='bold-para'>76</p>
+                            <p className='bold-para'>{admin?.userCount}</p>
                         </div>
                     </div>
                     <div className='bottom'>
                         <div className='stat-con'>
                             <div>
                                 <p className='light-para'>Attempted Atm Creation</p>
-                                <p className='bold-para'>27</p>
+                                <p className='bold-para'>{admin?.attemptedAtmsCount}</p>
                             </div>
                         </div>
                         <div className='stat-con'>
                             <div>
                                 <p className='light-para'>Succesfull Atm creation</p>
-                                <p className='bold-para green'>3</p>
+                                <p className='bold-para green'>{admin?.fundedAtmsCount}</p>
                             </div>
                         </div>
                         <div className='stat-con'>
@@ -48,12 +55,12 @@ const Analytics = () => {
                 </div>
                 <h2>Recent Account Sign up</h2>
                 {
-                    users.map((val, index) => (
+                    admin?.recentUsers.map((val, index) => (
                         <DetList key={index}>
                             <div className='left'>
                                 <img className='mr-3' src="/images/home/mail.svg" alt="img" />
                                 <div>
-                                    <p className='top'>holuwartoby@gmail</p>
+                                    <p className='top'>{val.email.slice(0, 20)}...</p>
                                     <p className='bottom'>11|02|2024</p>
                                 </div>
                             </div>
@@ -65,17 +72,17 @@ const Analytics = () => {
                 }
                 <h2>Recent Atm Created</h2>
                 {
-                    atms.map((val, index) => (
+                    admin?.recentAtms.map((val, index) => (
                         <DetList key={index}>
                             <div className='left'>
                                 <img className='mr-4' src="/images/home/atms.svg" alt="img" />
                                 <div>
-                                    <p className='top'>NGN5,550.00</p>
-                                    <p className='bottom'>Lorem Ipsum dolor .....</p>
+                                    <p className='top'>NGN{val.amount}</p>
+                                    <p className='bottom'>{val.customMessage.slice(0, 20)}...</p>
                                 </div>
                             </div>
                             <div className='right'>
-                                <p className='top green'>Funded</p>
+                                <p className={`top ${val.isFunded?"green":"red"}`}>{val.isFunded?"Funded":"Not-funded"}</p>
                                 <p className='bottom'>02:33PM</p>
                             </div>
                         </DetList>
