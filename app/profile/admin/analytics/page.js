@@ -22,26 +22,26 @@ const Analytics = () => {
                     <div className='top'>
                         <div>
                             <p className='light-para'>Total Sign Ups</p>
-                            <p className='bold-para'>120</p>
+                            <p className='bold-para'>76</p>
                         </div>
                     </div>
                     <div className='bottom'>
                         <div className='stat-con'>
                             <div>
                                 <p className='light-para'>Attempted Atm Creation</p>
-                                <p className='bold-para'>80</p>
+                                <p className='bold-para'>27</p>
                             </div>
                         </div>
                         <div className='stat-con'>
                             <div>
                                 <p className='light-para'>Succesfull Atm creation</p>
-                                <p className='bold-para green'>80</p>
+                                <p className='bold-para green'>3</p>
                             </div>
                         </div>
                         <div className='stat-con'>
                             <div>
                                 <p className='light-para'>Failed Atm Creation</p>
-                                <p className='bold-para red'>80</p>
+                                <p className='bold-para red'>0</p>
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@ const Analytics = () => {
                                 </div>
                             </div>
                             <div className='right'>
-                                <p className='top'>Successfull</p>
+                                <p className='top green'>Funded</p>
                                 <p className='bottom'>02:33PM</p>
                             </div>
                         </DetList>
