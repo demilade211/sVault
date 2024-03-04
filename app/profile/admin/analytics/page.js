@@ -14,9 +14,7 @@ const Analytics = () => {
     const [atms, setAtms] = useState([])
     const [users, setUsers] = useState([])
 
-    //const trimmedText = product.description.slice(0, 25);
-
-    console.log(admin);
+    //const trimmedText = product.description.slice(0, 25); 
 
     return (
         <AppLayout>
