@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { SetUser, SetExpired,SetAdmin } from "@/redux/slices/userSlice";
+import { SetUser, SetExpired, SetAdmin } from "@/redux/slices/userSlice";
 import { ShowLoader, HideLoader } from "@/redux/slices/loaderSlice";
 import { getLoggedInUser } from "@/services/auth"
 import cookie from "js-cookie"
@@ -16,10 +16,10 @@ const AppGuard = ({ children }) => {
   const { user } = useSelector((state) => state.userReducer);
   let token = cookie.get("token");
   const protectedRoutes = pathname === "/home"
-    || pathname === "/atm/[atmId]" 
-    || pathname === "/atm/create" 
-    || pathname === "/profile" 
-    || pathname === "/profile/admin/analytics" 
+    || pathname === "/atm/[atmId]"
+    || pathname === "/atm/create"
+    || pathname === "/profile"
+    || pathname === "/profile/admin/analytics"
 
   const dispatch = useDispatch();
 
@@ -33,33 +33,33 @@ const AppGuard = ({ children }) => {
       console.log(response);
       if (response.success) {
         dispatch(SetUser(response.user))
-        dispatch(SetAdmin(response.admin))
-        // if(!protectedRoutes){
-        //   router.push("/home");
-        // }
+        dispatch(SetAdmin(response.admin)) 
       } else {
-        if (response.message === "JSON Web Token is expired. Try Again!!!") {
-          dispatch(SetExpired("expired"))
-          cookie.remove("token");
-          router.push("/auth/login");
-        }
+        // if (response.message === "JSON Web Token is expired. Try Again!!!") {
+        //   dispatch(SetExpired("expired"))
+        //   cookie.remove("token");
+        //   router.push("/auth/login");
+        // }
+        dispatch(SetExpired("expired"))
+        cookie.remove("token");
+        window.location.href = "/auth/login";
       }
     } catch (error) {
       dispatch(HideLoader())
       dispatch(SetExpired("Unauthenticated"))
       cookie.remove("token");
-      router.push("/auth/login");
+      window.location.href = "/auth/login";
     }
   }, [dispatch])
 
-  useEffect(() => {
-    if (token) {
-      doFetchUserDetails()
-    } else { 
-      if(protectedRoutes){
-        router.push("/auth/login"); 
+  useEffect(() => { 
+    if (!token) { 
+      if (protectedRoutes) { 
+        window.location.href = "/auth/login";
       }
-      dispatch(HideLoader()) 
+      dispatch(HideLoader())
+    } else {
+      doFetchUserDetails()
     }
   }, [doFetchUserDetails])
 

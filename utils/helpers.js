@@ -81,3 +81,69 @@ export function hoursLeft(createdAt) {
 
   return { isWithin24Hours, hoursLefts };
 }
+
+export function calculateCompatibility(firstAndSecondName) {
+  let res = {};
+  let count = 0;
+  let resArr = [];
+  let sumArr = [];
+
+  if (firstAndSecondName.length < 1) return
+
+  let f = firstAndSecondName.split('');
+
+  for (let i = 0; i < firstAndSecondName.length; i++) {
+    for (let j = 0; j < firstAndSecondName.length; j++) {
+      f[i] === f[j] && count++;
+    }
+    res[f[i]] = count;
+    count = 0;
+  }
+  for (const property in res) {
+    resArr.push(res[property])
+  }
+
+  function rec(arr) {
+    let sum;
+    let lastIndex;
+    if (arr.length < 3) {
+      if (arr[0].toString().length > 1) {
+        let strArr = arr[0].toString().split("")
+        arr.splice(0, 1, ...strArr)
+        arr = arr.map(num => Number(num))
+        rec2(arr)
+      } else if (arr[1].toString().length > 1) {
+        let strArr = arr[1].toString().split("")
+        arr.splice(1, 1, ...strArr)
+        arr = arr.map(num => Number(num))
+        rec2(arr)
+      } else {
+        return `${arr[0]}${arr[1]}`;
+      }
+    }
+    rec2(arr)
+
+    let newArr = arr.slice()
+    newArr = [...sumArr]
+
+    newArr = newArr.filter(function (element) {
+      return element !== undefined;
+    });
+    sumArr = []
+    return rec(newArr)
+  }
+  function rec2(arr) {
+    let lastIndex
+    let sum
+    if (arr.length < 2) {
+      return sumArr.push(arr[0]) && arr.pop();
+    }
+    lastIndex = arr[arr.length - 1];
+    sum = arr[0] + lastIndex
+    sumArr.push(sum);
+    arr.splice(0, 1);
+    arr.splice(arr.length - 1, 1)
+    return rec2(arr)
+  }
+  return rec(resArr)
+}

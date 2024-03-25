@@ -33,9 +33,8 @@ const Weekend = ({ name,mOpen }) => {
                     <h1>Hi {name},</h1>
                     <p>
                         Please be patient we know you can't wait
-                        to unlock your suprise your atm
-                        will active for withdrawal by <span>Monday </span>
-                        because of the weekend
+                        to unlock your suprise. Your atm
+                        will active for withdrawal by <span>Monday </span> 
                     </p>
                 </ModCon>
 
